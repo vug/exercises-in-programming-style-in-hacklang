@@ -138,3 +138,17 @@ Generating autoload files
 * All tests: `vendor/bin/hacktest tests/`
 * Run auto-loader to gather class -> file information: `vendor/bin/hh-autoload`
 * To remove extensions: `php composer.phar remove hhvm/hsl`
+
+## Blog Posts
+* [HHVM 3\.28\.2 and 3\.27\.3 \| HHVM](https://hhvm.com/blog/2018/09/28/hhvm-3.28.2.html) New attribute `«__Entrypoint»`
+
+## Misc
+* [PHP: Language Reference \- Manual](https://www.php.net/manual/en/langref.php)
+* [PHP style guide with coding standards and best practices\.](https://gist.github.com/ryansechrest/8138375)
+* [hhvm/hh\-clilib: Command Line Interface \(CLI\) Library for the Hack programming language](https://github.com/hhvm/hh-clilib)
+* [hhast/linters\-usage\.md at master · hhvm/hhast](https://github.com/hhvm/hhast/blob/master/docs/linters-usage.md)
+* [hhvm/fbexpect: A Hack library for writing unit tests expressively](https://github.com/hhvm/fbexpect)
+
+
+## Get pride-and-prejudice
+* `wget https://raw.githubusercontent.com/crista/exercises-in-programming-style/master/pride-and-prejudice.txt`
