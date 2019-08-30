@@ -1,8 +1,13 @@
 require_once(__DIR__.'/../vendor/autoload.hack');
 
+/**
+ * Class to simulate global variables. Hack does not allows top-level commands.
+ * Hence had to put variable accessed by every function into a class.
+ */
 final class Globals {
-    public static vec<string> $data = vec[];
-    public static vec<string> $words = vec[];
+    public static Vector<string> $data = Vector {};
+    public static Vector<string> $words = Vector {};
+    // public static Map<string, int> $word_freqs = Map {};  // for in-place sorting
     public static dict<string, int> $word_freqs = dict[];
 }
 
@@ -10,9 +15,9 @@ final class Globals {
  * Read file into a vec of characters.
  */
 function read_file(string $path_to_file): void {
-    $text = file_get_contents($path_to_file);    
+    $text = file_get_contents($path_to_file);
     $chars = HH\Lib\Str\split($text, '');
-    Globals::$data = HH\Lib\Vec\concat(Globals::$data, $chars);
+    Globals::$data->addAll($chars);
 }
 
 /**
@@ -20,16 +25,15 @@ function read_file(string $path_to_file): void {
  */
 function filter_chars_and_normalize(): void {
     // in-place
-    foreach(Globals::$data as $ix => $char) {
+    foreach (Globals::$data as $ix => $char) {
         if (!ctype_alnum($char)) {
             Globals::$data[$ix] = ' ';
-        }
-        else {
+        } else {
             Globals::$data[$ix] = HH\Lib\Str\lowercase($char);
         }
     }
-    // replace
-    // Globals::$data = HH\Lib\Vec\map(Globals::$data, $ch ==> ctype_alnum($ch) ? $ch : ' ');
+    // out-of-place
+    // Globals::$data = Globals::$data->map($ch ==> ctype_alnum($ch) ? $ch : ' ');
 }
 
 /**
@@ -37,38 +41,30 @@ function filter_chars_and_normalize(): void {
  */
 function scan(): void {
     $text = HH\Lib\Str\join(Globals::$data, '');
-    $words = HH\Lib\Str\split($text, ' ');
-    $words = HH\Lib\Vec\filter($words, $w ==> $w !== '');
-    Globals::$words = HH\Lib\Vec\concat(Globals::$words, $words);
+    $text_words = HH\Lib\Str\split($text, ' ');
+    $text_words = HH\Lib\Vec\filter($text_words, $w ==> $w !== '');
+    Globals::$words->addAll($text_words);
 }
 
 function remove_stop_words(): void {
-    $text = file_get_contents("src/stop_words.txt");
-    $lowercase_chars = "abcdefghijklmnopqrstuvwxyz";
-    $stop_words_vec = HH\Lib\Vec\concat(
-        HH\Lib\Str\split($text, ','),
-        HH\Lib\Str\split($lowercase_chars, '')
-    );
-    $stop_words = keyset[];
-    foreach($stop_words_vec as $word) {
-        $stop_words[] = $word;
-    }
-    
-    Globals::$words = HH\Lib\Vec\filter(
-        Globals::$words, 
-        $word ==> !HH\Lib\C\contains_key($stop_words, $word)
-    );
+    $stop_words_text = file_get_contents("src/stop_words.txt");
+    $stop_words = Set::fromItems(HH\Lib\Str\split($stop_words_text, ','));
+
+    $lowercase_chars_text = "abcdefghijklmnopqrstuvwxyz";
+    $stop_words->addAll(HH\Lib\Str\split($lowercase_chars_text, ''));
+
+    Globals::$words = Globals::$words->filter($word ==> !$stop_words->contains($word));
 }
 
 /**
  * Creates a list of pairs associating words with frequencies.
  */
 function frequencies(): void {
-    foreach(Globals::$words as $word) {
+    foreach (Globals::$words as $word) {
+        // if (Globals::$word_freqs->containsKey($word)) {  // in-place version
         if (HH\Lib\C\contains_key(Globals::$word_freqs, $word)) {
             Globals::$word_freqs[$word] += 1;
-        }
-        else {
+        } else {
             Globals::$word_freqs[$word] = 1;
         }
     }
@@ -78,15 +74,22 @@ function frequencies(): void {
  * Sort $word_freqs by frequency
  */
 function sort_freqs(): void {
-    Globals::$word_freqs = HH\Lib\Dict\sort(Globals::$word_freqs, ($n, $m) ==> $m - $n);
+    // in-place sort. But only works on local variables.
+    // arsort(inout Globals::$word_freqs);  // in-place sort.
+    Globals::$word_freqs = HH\Lib\Dict\sort(
+        Globals::$word_freqs,
+        ($n, $m) ==> $m - $n,
+    );
 }
 
 <<__EntryPoint>>
 function main_05_cookbook(): noreturn {
     \Facebook\AutoloadMap\initialize();
 
-    $options = getopt("", vec["text:"]);    
-    $file = HH\Lib\C\contains_key($options, "text") ? $options["text"] : "src/pride-and-prejudice.txt";
+    $options = getopt("", vec["text:"]);
+    $file = HH\Lib\C\contains_key($options, "text")
+        ? $options["text"]
+        : "src/pride-and-prejudice.txt";
     // print_r(var_dump($file));
     read_file($file);
     // print_r(Globals::$data);
@@ -102,8 +105,8 @@ function main_05_cookbook(): noreturn {
     // print_r(Globals::$word_freqs);
 
     $top_words = HH\Lib\Dict\take(Globals::$word_freqs, 25);
-    foreach($top_words as $word => $freq) {
-        echo $word . " - " . $freq . "\n";
+    foreach ($top_words as $word => $freq) {
+        echo $word." - ".$freq."\n";
     }
 
     exit(0);
