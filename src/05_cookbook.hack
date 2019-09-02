@@ -1,18 +1,17 @@
 require_once(__DIR__.'/../vendor/autoload.hack');
 
 /**
- * Class to simulate global variables. Hack does not allows top-level commands.
- * Hence had to put variable accessed by every function into a class.
+ * Class to simulate global variables. 
+ * Hack does not allows top-level commands including global variable assignments.
  */
 final class Globals {
     public static Vector<string> $data = Vector {};
     public static Vector<string> $words = Vector {};
-    // public static Map<string, int> $word_freqs = Map {};  // for in-place sorting
-    public static dict<string, int> $word_freqs = dict[];
+    public static Map<string, int> $word_freqs = Map {};
 }
 
 /**
- * Read file into a vec of characters.
+ * Read file into a Vector of characters, $data.
  */
 function read_file(string $path_to_file): void {
     $text = file_get_contents($path_to_file);
@@ -21,7 +20,7 @@ function read_file(string $path_to_file): void {
 }
 
 /**
- * Replaces all non-alphanumeric chars in data with whitespace.
+ * Replace all non-alphanumeric chars in $data with whitespace.
  */
 function filter_chars_and_normalize(): void {
     // in-place
@@ -37,7 +36,7 @@ function filter_chars_and_normalize(): void {
 }
 
 /**
- * Scans data for words, filling the global variable $words.
+ * Scan $data for words, fill them into $words.
  */
 function scan(): void {
     $text = HH\Lib\Str\join(Globals::$data, '');
@@ -46,6 +45,9 @@ function scan(): void {
     Globals::$words->addAll($text_words);
 }
 
+/**
+ * Remove stop words from $words
+ */
 function remove_stop_words(): void {
     $stop_words_text = file_get_contents("texts/stop_words.txt");
     $stop_words = Set::fromItems(HH\Lib\Str\split($stop_words_text, ','));
@@ -57,12 +59,11 @@ function remove_stop_words(): void {
 }
 
 /**
- * Creates a list of pairs associating words with frequencies.
+ * Compute word frequencies into $word_freqs.
  */
 function frequencies(): void {
     foreach (Globals::$words as $word) {
-        // if (Globals::$word_freqs->containsKey($word)) {  // in-place version
-        if (HH\Lib\C\contains_key(Globals::$word_freqs, $word)) {
+        if (Globals::$word_freqs->containsKey($word)) {  // in-place version
             Globals::$word_freqs[$word] += 1;
         } else {
             Globals::$word_freqs[$word] = 1;
@@ -74,12 +75,10 @@ function frequencies(): void {
  * Sort $word_freqs by frequency
  */
 function sort_freqs(): void {
-    // in-place sort. But only works on local variables.
-    // arsort(inout Globals::$word_freqs);  // in-place sort.
-    Globals::$word_freqs = HH\Lib\Dict\sort(
-        Globals::$word_freqs,
-        ($n, $m) ==> $m - $n,
-    );
+    // in-place
+    // arsort(inout Globals::$word_freqs);  // Parsing[1002], NastCheck[3050] "Args for inout params must be local"
+    $localized = Globals::$word_freqs;  // localize but keeps reference
+    arsort(inout $localized);
 }
 
 <<__EntryPoint>>
