@@ -47,7 +47,7 @@ function scan(): void {
 }
 
 function remove_stop_words(): void {
-    $stop_words_text = file_get_contents("src/stop_words.txt");
+    $stop_words_text = file_get_contents("texts/stop_words.txt");
     $stop_words = Set::fromItems(HH\Lib\Str\split($stop_words_text, ','));
 
     $lowercase_chars_text = "abcdefghijklmnopqrstuvwxyz";
