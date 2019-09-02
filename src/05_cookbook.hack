@@ -83,26 +83,15 @@ function sort_freqs(): void {
 }
 
 <<__EntryPoint>>
-function main_05_cookbook(): noreturn {
+function main_05_cookbook(string $file): noreturn {
     \Facebook\AutoloadMap\initialize();
 
-    $options = getopt("", vec["text:"]);
-    $file = HH\Lib\C\contains_key($options, "text")
-        ? $options["text"]
-        : "src/pride-and-prejudice.txt";
-    // print_r(var_dump($file));
     read_file($file);
-    // print_r(Globals::$data);
     filter_chars_and_normalize();
-    // print_r(Globals::$data);
     scan();
-    // print_r(Globals::$words);
     remove_stop_words();
-    // print_r(Globals::$words);
     frequencies();
-    // print_r(Globals::$word_freqs);
     sort_freqs();
-    // print_r(Globals::$word_freqs);
 
     $top_words = HH\Lib\Dict\take(Globals::$word_freqs, 25);
     foreach ($top_words as $word => $freq) {
