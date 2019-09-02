@@ -1,9 +1,10 @@
 {
     "require": {
-    },
-    "require-dev": {
         "hhvm/hsl": "^4.15",
         "hhvm/hhvm-autoload": "^2.0",
+        "facebook/hh-clilib": "^2.2"
+    },
+    "require-dev": {
         "hhvm/hhast": "^4.15",
         "hhvm/hacktest": "^1.6",
         "facebook/fbexpect": "^2.6"
