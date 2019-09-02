@@ -1,7 +1,7 @@
 require_once(__DIR__.'/../vendor/autoload.hack');
 
 /**
- * Class to simulate global variables. 
+ * Class to simulate global variables via static members. 
  * Hack does not allows top-level commands including global variable assignments.
  */
 final class Globals {
@@ -31,8 +31,6 @@ function filter_chars_and_normalize(): void {
             Globals::$data[$ix] = HH\Lib\Str\lowercase($char);
         }
     }
-    // out-of-place
-    // Globals::$data = Globals::$data->map($ch ==> ctype_alnum($ch) ? $ch : ' ');
 }
 
 /**
@@ -63,7 +61,7 @@ function remove_stop_words(): void {
  */
 function frequencies(): void {
     foreach (Globals::$words as $word) {
-        if (Globals::$word_freqs->containsKey($word)) {  // in-place version
+        if (Globals::$word_freqs->containsKey($word)) {
             Globals::$word_freqs[$word] += 1;
         } else {
             Globals::$word_freqs[$word] = 1;
@@ -75,9 +73,7 @@ function frequencies(): void {
  * Sort $word_freqs by frequency
  */
 function sort_freqs(): void {
-    // in-place
-    // arsort(inout Globals::$word_freqs);  // Parsing[1002], NastCheck[3050] "Args for inout params must be local"
-    $localized = Globals::$word_freqs;  // localize but keeps reference
+    $localized = Globals::$word_freqs;  // localize but keeps reference, to deal with Hack(3050)
     arsort(inout $localized);
 }
 
