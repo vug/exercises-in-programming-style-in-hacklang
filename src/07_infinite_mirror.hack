@@ -41,7 +41,7 @@ function main(string $file): void {
   );
 
   $word_freqs = dict[];
-  // To prevent stack overflow reduce the recursion depth and do recursion on smaller chuncks.
+  // To prevent stack overflow reduce the recursion depth and do recursion on smaller chunks.
   for ($i = 0; $i < C\count($words); $i += RECURSION_LIMIT) {
     count(
       Vec\slice($words, $i, RECURSION_LIMIT),
