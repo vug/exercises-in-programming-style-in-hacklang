@@ -1,4 +1,4 @@
-namespace ex06;
+namespace ex05;
 use HH\Lib\{C, Dict, Keyset, Regex, Str, Vec};
 
 function read_file(string $path_to_file): string {

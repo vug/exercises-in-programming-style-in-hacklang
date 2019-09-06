@@ -1,4 +1,4 @@
-namespace ex05;
+namespace ex04;
 use HH\Lib\{Str, Vec, Dict};
 
 /**
@@ -81,7 +81,7 @@ function sort_freqs(): void {
   \arsort(inout $localized);
 }
 
-function main2(string $file): void {
+function main(string $file): void {
   read_file($file);
   filter_chars_and_normalize();
   scan();
