@@ -1,3 +1,6 @@
+namespace ex05;
+use HH\Lib\{Str, Vec, Dict};
+
 /**
  * Class to simulate global variables via static members. 
  * Hack does not allows top-level commands including global variable assignments.
@@ -12,8 +15,8 @@ final class Globals {
  * Read file into a Vector of characters, $data.
  */
 function read_file(string $path_to_file): void {
-    $text = file_get_contents($path_to_file);
-    $chars = HH\Lib\Str\split($text, '');
+    $text = \file_get_contents($path_to_file);
+    $chars = Str\split($text, '');
     Globals::$data->addAll($chars);
 }
 
@@ -23,10 +26,10 @@ function read_file(string $path_to_file): void {
 function filter_chars_and_normalize(): void {
     // in-place
     foreach (Globals::$data as $ix => $char) {
-        if (!ctype_alnum($char)) {
+        if (!\ctype_alnum($char)) {
             Globals::$data[$ix] = ' ';
         } else {
-            Globals::$data[$ix] = HH\Lib\Str\lowercase($char);
+            Globals::$data[$ix] = Str\lowercase($char);
         }
     }
 }
@@ -35,9 +38,9 @@ function filter_chars_and_normalize(): void {
  * Scan $data for words, fill them into $words.
  */
 function scan(): void {
-    $text = HH\Lib\Str\join(Globals::$data, '');
-    $text_words = HH\Lib\Str\split($text, ' ');
-    $text_words = HH\Lib\Vec\filter($text_words, $w ==> $w !== '');
+    $text = Str\join(Globals::$data, '');
+    $text_words = Str\split($text, ' ');
+    $text_words = Vec\filter($text_words, $w ==> $w !== '');
     Globals::$words->addAll($text_words);
 }
 
@@ -45,11 +48,11 @@ function scan(): void {
  * Remove stop words from $words
  */
 function remove_stop_words(): void {
-    $stop_words_text = file_get_contents("texts/stop_words.txt");
-    $stop_words = Set::fromItems(HH\Lib\Str\split($stop_words_text, ','));
+    $stop_words_text = \file_get_contents("texts/stop_words.txt");
+    $stop_words = Set::fromItems(Str\split($stop_words_text, ','));
 
     $lowercase_chars_text = "abcdefghijklmnopqrstuvwxyz";
-    $stop_words->addAll(HH\Lib\Str\split($lowercase_chars_text, ''));
+    $stop_words->addAll(Str\split($lowercase_chars_text, ''));
 
     Globals::$words = Globals::$words->filter($word ==> !$stop_words->contains($word));
 }
@@ -72,10 +75,10 @@ function frequencies(): void {
  */
 function sort_freqs(): void {
     $localized = Globals::$word_freqs;  // localize but keeps reference, to deal with Hack(3050)
-    arsort(inout $localized);
+    \arsort(inout $localized);
 }
 
-function main_05_cookbook(string $file): noreturn {
+function main2(string $file): void {
     read_file($file);
     filter_chars_and_normalize();
     scan();
@@ -83,10 +86,8 @@ function main_05_cookbook(string $file): noreturn {
     frequencies();
     sort_freqs();
 
-    $top_words = HH\Lib\Dict\take(Globals::$word_freqs, 25);
+    $top_words = Dict\take(Globals::$word_freqs, 25);
     foreach ($top_words as $word => $freq) {
         echo $word." - ".$freq."\n";
     }
-
-    exit(0);
 }

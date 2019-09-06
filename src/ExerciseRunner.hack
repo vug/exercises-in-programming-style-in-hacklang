@@ -9,9 +9,9 @@ final class ExerciseRunner extends CLILib\CLIWithArguments {
     $input = $argv[2] ?? "src/small_input.txt";
 
     switch ($exercise) {
-        case "05_cookbook.hack":
-            main_05_cookbook($input);
-            break;
+      case "05_cookbook.hack":
+        ex05\main2($input);
+        break;
     }
 
     return 0;
