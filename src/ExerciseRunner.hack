@@ -12,6 +12,8 @@ final class ExerciseRunner extends CLILib\CLIWithArguments {
       case "05_cookbook.hack":
         ex05\main2($input);
         break;
+      default:
+        \print_r("Exercise \"{$exercise}\" does not exist.\n");
     }
 
     return 0;
