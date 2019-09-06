@@ -44,12 +44,18 @@ function frequencies(vec<string> $word_list): dict<string, int> {
 
 function sort(dict<string, int> $word_freqs): dict<string, int> {
   $sorted = Dict\sort_by($word_freqs, $v ==> -$v);
-  $first = Dict\take($sorted, 25);
-  return $first;
+  return $sorted;
+}
+
+function print_top25(dict<string, int> $word_freqs): void {
+  $top25 = Dict\take($word_freqs, 25);
+  foreach ($top25 as $word => $freq) {
+    \print_r($word." - ".$freq."\n");
+  }
 }
 
 function main(string $file): void {
-  \print_r(sort(frequencies(
+  print_top25(sort(frequencies(
     remove_stop_words(scan(filter_chars_and_normalize(read_file($file)))),
   )));
 }
