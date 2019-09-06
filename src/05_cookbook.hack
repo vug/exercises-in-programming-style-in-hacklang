@@ -1,5 +1,3 @@
-require_once(__DIR__.'/../vendor/autoload.hack');
-
 /**
  * Class to simulate global variables via static members. 
  * Hack does not allows top-level commands including global variable assignments.
@@ -77,10 +75,7 @@ function sort_freqs(): void {
     arsort(inout $localized);
 }
 
-<<__EntryPoint>>
 function main_05_cookbook(string $file): noreturn {
-    \Facebook\AutoloadMap\initialize();
-
     read_file($file);
     filter_chars_and_normalize();
     scan();
