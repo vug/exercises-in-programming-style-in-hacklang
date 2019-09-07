@@ -15,6 +15,9 @@ final class ExerciseRunner extends CLILib\CLIWithArguments {
       case "src/05_pipeline.hack":
         ex05\main($input);
         break;
+      case "src/06_code_golf.hack":
+        ex06\main($input);
+        break;
       case "src/07_infinite_mirror.hack":
         ex07\main($input);
         break;        
