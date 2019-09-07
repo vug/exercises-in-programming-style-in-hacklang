@@ -20,6 +20,9 @@ final class ExerciseRunner extends CLILib\CLIWithArguments {
         break;
       case "src/07_infinite_mirror.hack":
         ex07\main($input);
+        break;
+      case "src/08_kick_forward.hack":
+        ex08\main($input);
         break;        
       default:
         \print_r("Exercise \"{$exercise}\" does not exist.\n");
