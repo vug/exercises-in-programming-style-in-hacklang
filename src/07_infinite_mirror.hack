@@ -1,5 +1,6 @@
 namespace ex07;
 use HH\Lib\{C, Dict, Keyset, Regex, Str, Vec};
+use U;
 
 const int RECURSION_LIMIT = 1750;
 
@@ -36,8 +37,8 @@ function main(string $file): void {
   );
   $words = Vec\filter(Str\split($normalized, ' '), $w ==> $w !== '');
   $stop_words = Keyset\union(
-    keyset(Str\split(\file_get_contents("texts/stop_words.txt"), ',')),
-    keyset(Str\split("abcdefghijklmnopqrstuvwxyz", '')),
+    keyset(Str\split(\file_get_contents(U\stop_words_file_path), ',')),
+    keyset(Str\split(U\ascii_lowercase, '')),
   );
 
   $word_freqs = dict[];

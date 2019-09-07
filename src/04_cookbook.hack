@@ -1,5 +1,6 @@
 namespace ex04;
 use HH\Lib\{Str, Vec, Dict};
+use U;
 
 /**
  * Class to simulate global variables via static members. 
@@ -48,11 +49,9 @@ function scan(): void {
  * Remove stop words from $words
  */
 function remove_stop_words(): void {
-  $stop_words_text = \file_get_contents("texts/stop_words.txt");
+  $stop_words_text = \file_get_contents(U\stop_words_file_path);
   $stop_words = Set::fromItems(Str\split($stop_words_text, ','));
-
-  $lowercase_chars_text = "abcdefghijklmnopqrstuvwxyz";
-  $stop_words->addAll(Str\split($lowercase_chars_text, ''));
+  $stop_words->addAll(Str\split(U\ascii_lowercase, ''));
 
   Globals::$words = Globals::$words->filter(
     $word ==> !$stop_words->contains($word),
