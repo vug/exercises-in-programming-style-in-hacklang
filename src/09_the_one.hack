@@ -38,7 +38,10 @@ function scan(string $text): vec<string> {
 }
 
 function remove_stop_words(vec<string> $words): vec<string> {
-  $stops = keyset(Vec\concat(Str\split(\file_get_contents(U\stop_words_file_path), ','), Str\split(U\ascii_lowercase, '')));  
+  $stops = keyset(Vec\concat(
+    Str\split(\file_get_contents(U\stop_words_file_path), ','),
+    Str\split(U\ascii_lowercase, ''),
+  ));
   $filtered = Vec\filter($words, $w ==> !C\contains_key($stops, $w));
   return $filtered;
 }
@@ -54,7 +57,7 @@ function sort(dict<string, int> $word_freqs): dict<string, int> {
 }
 
 function top25_freqs(dict<string, int> $word_freqs): void {
-  foreach(Dict\take($word_freqs, 25) as $word => $cnt) {
+  foreach (Dict\take($word_freqs, 25) as $word => $cnt) {
     \print_r("{$word} - {$cnt}\n");
   }
 }
