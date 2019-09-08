@@ -2,7 +2,7 @@ use function Facebook\FBExpect\expect;
 use type Facebook\HackTest\{DataProvider, HackTest};
 
 final class StyleTest extends HackTest {
-  public static function compare_exercise(string $source_file) {
+  public static function compare_exercise(string $source_file): void {
     try {
       \shell_exec("hhvm bin/run_exercise.hh src/{$source_file} texts/small_input.txt > test_tmp.txt");
       $actual = \file_get_contents("test_tmp.txt");
