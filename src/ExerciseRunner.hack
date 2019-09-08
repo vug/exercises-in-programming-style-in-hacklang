@@ -29,7 +29,10 @@ final class ExerciseRunner extends CLILib\CLIWithArguments {
         break;
       case "src/10_things.hack":
         ex10\main($input);
-        break;                     
+        break;
+      case "src/11_letterbox.hack":
+        ex11\main($input);
+        break;
       default:
         \print_r("Exercise \"{$exercise}\" does not exist.\n");
     }
