@@ -89,7 +89,7 @@ function main(string $file): void {
   sort_freqs();
 
   $top_words = Dict\take(Globals::$word_freqs, 25);
-  foreach ($top_words as $word => $freq) {
-    echo $word." - ".$freq."\n";
+  foreach ($top_words as $word => $cnt) {
+    \print_r("{$word} - {$cnt}\n");
   }
 }

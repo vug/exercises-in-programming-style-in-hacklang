@@ -47,8 +47,8 @@ function sort(dict<string, int> $word_freqs): dict<string, int> {
 
 function print_top25(dict<string, int> $word_freqs): void {
   $top25 = Dict\take($word_freqs, 25);
-  foreach ($top25 as $word => $freq) {
-    \print_r($word." - ".$freq."\n");
+  foreach ($top25 as $word => $cnt) {
+    \print_r("{$word} - {$cnt}\n");
   }
 }
 

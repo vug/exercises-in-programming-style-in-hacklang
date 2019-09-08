@@ -71,8 +71,8 @@ class Functions {
     dict<string, int> $word_freqs,
     (function(mixed, mixed): void) $func,
   ): void {
-    foreach (Dict\take($word_freqs, 25) as $word => $freq) {
-      \print_r($word." - ".$freq."\n");
+    foreach (Dict\take($word_freqs, 25) as $word => $cnt) {
+      \print_r("{$word} - {$cnt}\n");
     }
     $func(null, null);
   }
