@@ -4,11 +4,6 @@ use namespace Facebook\{TypeAssert, TypeSpec};
 use HH;
 use U;
 
-type TMessage = shape(
-  'message' => string,
-  ?'argument' => mixed,
-);
-
 enum Message: string as string {
   init = "init";
   increment_count = "increment_count";
@@ -22,17 +17,17 @@ enum Message: string as string {
 final class DataStorageManager {
   private string $data = '';
 
-  public function dispatch(TMessage $message): mixed {
-    switch ($message['message']) {
+  public function dispatch(Message $message, mixed $argument = null): mixed {
+    switch ($message) {
       case Message::init:
-        $filepath = TypeAssert\string($message['argument'] ?? null);
+        $filepath = TypeAssert\string($argument);
         return $this->init($filepath);
         break;
       case Message::words:
         return $this->words();
         break;
       default:
-        throw new \Exception("Message not understood ".$message['message']);
+        throw new \Exception("Message not understood ".$message);
     }
   }
 
@@ -51,17 +46,17 @@ final class DataStorageManager {
 final class StopWordsManager {
   private keyset<string> $stopWords = keyset[];
 
-  public function dispatch(TMessage $message): mixed {
-    switch ($message['message']) {
+  public function dispatch(Message $message, mixed $argument = null): mixed {
+    switch ($message) {
       case Message::init:
         return $this->init();
         break;
       case Message::is_stop_word:
-        $word = TypeAssert\string($message['argument'] ?? null);
+        $word = TypeAssert\string($argument);
         return $this->is_stop_word($word);
         break;
       default:
-        throw new \Exception("Message not understood ".$message['message']);
+        throw new \Exception("Message not understood ".$message);
     }
   }
 
@@ -85,17 +80,17 @@ final class WordFrequencyManager {
     $this->wordFreqs = dict[];
   }
 
-  public function dispatch(TMessage $message): mixed {
-    switch ($message['message']) {
+  public function dispatch(Message $message, mixed $argument = null): mixed {
+    switch ($message) {
       case Message::increment_count:
-        $word = TypeAssert\string($message['argument'] ?? null);
+        $word = TypeAssert\string($argument);
         return $this->increment_count($word);
         break;
       case Message::sorted:
         return $this->sorted();
         break;
       default:
-        throw new \Exception("Message not understood ".$message['message']);
+        throw new \Exception("Message not understood ".$message);
     }
   }
 
@@ -124,45 +119,41 @@ final class WordFrequencyController {
     $this->wordFrequencyManager = new WordFrequencyManager();
   }
 
-  public function dispatch(TMessage $message): mixed {
-    switch ($message['message']) {
+  public function dispatch(Message $message, mixed $argument = null): mixed {
+    switch ($message) {
       case Message::init:
-        $filepath = TypeAssert\string($message['argument'] ?? null);
+        $filepath = TypeAssert\string($argument);
         return $this->init($filepath);
         break;
       case Message::run:
         return $this->run();
         break;
       default:
-        throw new \Exception("Message not understood ".$message['message']);
+        throw new \Exception("Message not understood ".$message);
     }
   }
 
   private function init(string $filepath): void {
     $this->dataStorageManager
-      ->dispatch(shape("message" => Message::init, "argument" => $filepath));
-    $this->stopWordsManager->dispatch(shape("message" => Message::init));
+      ->dispatch(Message::init, $filepath);
+    $this->stopWordsManager->dispatch(Message::init);
   }
 
   private function run(): void {
     $words = $this->dataStorageManager
-      ->dispatch(shape("message" => Message::words));
+      ->dispatch(Message::words);
     $words = TypeSpec\vec(TypeSpec\string())->assertType($words);
     foreach ($words as $word) {
       $is_stop_word = $this->stopWordsManager
-        ->dispatch(
-          shape("message" => Message::is_stop_word, "argument" => $word),
-        );
+        ->dispatch(Message::is_stop_word, $word);
       $is_stop_word = TypeAssert\bool($is_stop_word);
       if (!$is_stop_word) {
-        $this->wordFrequencyManager->dispatch(
-          shape("message" => Message::increment_count, "argument" => $word),
-        );
+        $this->wordFrequencyManager->dispatch(Message::increment_count, $word);
       }
     }
 
     $word_freqs = $this->wordFrequencyManager
-      ->dispatch(shape("message" => Message::sorted));
+      ->dispatch(Message::sorted);
     $word_freqs = TypeSpec\dict(TypeSpec\string(), TypeSpec\int())->assertType(
       $word_freqs,
     );
@@ -176,10 +167,8 @@ final class WordFrequencyController {
 function main(string $filepath): void {
   try { // TypeAssert exceptions were not printed by themselves. Had to catch them.
     $wf_controller = new WordFrequencyController();
-    $wf_controller->dispatch(
-      shape("message" => Message::init, "argument" => $filepath),
-    );
-    $wf_controller->dispatch(shape("message" => Message::run));
+    $wf_controller->dispatch(Message::init, $filepath);
+    $wf_controller->dispatch(Message::run);
   } catch (\Exception $ex) {
     \print_r($ex->toString());
   }
