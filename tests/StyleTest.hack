@@ -50,4 +50,8 @@ final class StyleTest extends HackTest {
   public function testSmallInput12(): void {
     self::compare_exercise("12_closed_maps.hack");
   }
+
+  public function testSmallInput13(): void {
+    self::compare_exercise("13_abstract_things.hack");
+  }
 }
