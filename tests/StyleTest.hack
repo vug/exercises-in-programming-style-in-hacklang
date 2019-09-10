@@ -58,4 +58,8 @@ final class StyleTest extends HackTest {
   public function testSmallInput14(): void {
     self::compare_exercise("14_hollywood.hack");
   }
+
+  public function testSmallInput15(): void {
+    self::compare_exercise("15_bulletin_board.hack");
+  }
 }
