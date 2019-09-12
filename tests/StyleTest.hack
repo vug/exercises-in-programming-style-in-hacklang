@@ -1,3 +1,4 @@
+use namespace HH\Lib\{Str, Vec};
 use function Facebook\FBExpect\expect;
 use type Facebook\HackTest\{DataProvider, HackTest};
 
@@ -7,7 +8,10 @@ final class StyleTest extends HackTest {
       \shell_exec(
         "hhvm bin/run_exercise.hh src/{$source_file} texts/small_input.txt > test_tmp.txt",
       );
-      $actual = \file_get_contents("test_tmp.txt");
+      $actual = \file_get_contents("test_tmp.txt")
+        |> Str\split($$, "\n") // ex18 prints out extra lines
+        |> Vec\filter($$, $line ==> !Str\contains($line, "ex18"))
+        |> Str\join($$, "\n");
       $expected = \file_get_contents("texts/small_input-top_words.txt");
       expect($actual)->toBePHPEqual($expected);
     } finally {
@@ -65,5 +69,9 @@ final class StyleTest extends HackTest {
 
   public function testSmallInput16(): void {
     self::compare_exercise("16_introspective.hack");
+  }
+
+  public function testSmallInput18(): void {
+    self::compare_exercise("18_aspects.hack");
   }
 }
