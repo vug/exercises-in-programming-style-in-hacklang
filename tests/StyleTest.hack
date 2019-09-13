@@ -78,4 +78,8 @@ final class StyleTest extends HackTest {
   public function testSmallInput19(): void {
     self::compare_exercise("19_plugins.hack");
   }
+
+  public function testSmallInput20(): void {
+    self::compare_exercise("20_constructivist.hack");
+  }
 }
