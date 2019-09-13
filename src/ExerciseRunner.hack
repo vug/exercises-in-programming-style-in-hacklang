@@ -51,6 +51,9 @@ final class ExerciseRunner extends CLILib\CLIWithArguments {
       case "src/18_aspects.hack":
         ex18\main($input);
         break;
+      case "src/19_plugins.hack":
+        ex19\main($input);
+        break;
       default:
         \print_r("Exercise \"{$exercise}\" does not exist.\n");
     }
