@@ -23,7 +23,10 @@ function scan(string $str_data): vec<string> {
 function remove_stop_words(vec<string> $word_list): vec<string> {
   $stop_words_text = \file_get_contents(U\stop_words_file_path);
   $stop_words = keyset(Str\split($stop_words_text, ','));
-  $stop_words = Keyset\union($stop_words, keyset(Str\split(U\ascii_lowercase, '')));
+  $stop_words = Keyset\union(
+    $stop_words,
+    keyset(Str\split(U\ascii_lowercase, '')),
+  );
   $filtered = Vec\filter($word_list, $w ==> !C\contains($stop_words, $w));
   return $filtered;
 }
@@ -53,7 +56,12 @@ function print_top25(dict<string, int> $word_freqs): void {
 }
 
 function main(string $file): void {
-  print_top25(sort(frequencies(
-    remove_stop_words(scan(filter_chars_and_normalize(read_file($file)))),
-  )));
+  $file
+    |> read_file($$)
+    |> filter_chars_and_normalize($$)
+    |> scan($$)
+    |> remove_stop_words($$)
+    |> frequencies($$)
+    |> sort($$)
+    |> print_top25($$);
 }
