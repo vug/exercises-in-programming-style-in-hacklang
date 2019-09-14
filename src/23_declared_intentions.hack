@@ -5,8 +5,12 @@ use HH;
 use U;
 
 /**
- * Poor man's run-time type checking system.
- * Checks primitives and vecs and dicts of primitives.
+ * Hack already comes with a static type-checking system 
+ * which prevents run-time type checking problems.
+ *
+ * Let's ignore Hack's static type checking and implement
+ * a poor man's run-time type checking system
+ * which checks primitives and vecs and dicts of primitives.
  */
 function simple_gettype(mixed $var): string {
   $type = \gettype($var);
