@@ -66,10 +66,12 @@ final class ExerciseRunner extends CLILib\CLIWithArguments {
       case "src/23_declared_intentions.hack":
         ex23\main($input);
         break;
+      case "src/24_quarantine.hack":
+        ex24\main($input);
+        break;
       default:
         \print_r("Exercise \"{$exercise}\" does not exist.\n");
     }
-
     return 0;
   }
 

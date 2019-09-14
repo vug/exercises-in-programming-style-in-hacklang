@@ -94,4 +94,8 @@ final class StyleTest extends HackTest {
   public function testSmallInput23(): void {
     self::compare_exercise("23_declared_intentions.hack");
   }
+
+  public function testSmallInput24(): void {
+    self::compare_exercise("24_quarantine.hack");
+  }
 }
