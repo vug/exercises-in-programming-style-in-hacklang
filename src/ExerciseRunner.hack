@@ -69,6 +69,9 @@ final class ExerciseRunner extends CLILib\CLIWithArguments {
       case "src/24_quarantine.hack":
         ex24\main($input);
         break;
+      case "src/25_persistent_tables.hack":
+        ex25\main($input);
+        break;
       default:
         \print_r("Exercise \"{$exercise}\" does not exist.\n");
     }

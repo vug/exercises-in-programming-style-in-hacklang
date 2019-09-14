@@ -8,11 +8,18 @@ final class StyleTest extends HackTest {
       \shell_exec(
         "hhvm bin/run_exercise.hh src/{$source_file} texts/small_input.txt > test_tmp.txt",
       );
-      $actual = \file_get_contents("test_tmp.txt")
-        |> Str\split($$, "\n") // ex18 prints out extra lines
-        |> Vec\filter($$, $line ==> !Str\contains($line, "ex18"))
-        |> Str\join($$, "\n");
+      $actual = \file_get_contents("test_tmp.txt");
       $expected = \file_get_contents("texts/small_input-top_words.txt");
+      // ex18 prints out extra lines
+      if ($source_file === "18_aspects.hack") {
+        $actual = Str\split($actual, "\n")
+          |> Vec\filter($$, $line ==> !Str\contains($line, "ex18"))
+          |> Str\join($$, "\n");
+        // ex25 prints results in a different order
+      } else if ($source_file === "25_persistent_tables.hack") {
+        $actual = keyset(Str\split($actual, "\n"));
+        $expected = keyset(Str\split($expected, "\n"));
+      }
       expect($actual)->toBePHPEqual($expected);
     } finally {
       \shell_exec("rm test_tmp.txt");
@@ -97,5 +104,9 @@ final class StyleTest extends HackTest {
 
   public function testSmallInput24(): void {
     self::compare_exercise("24_quarantine.hack");
+  }
+
+  public function testSmallInput25(): void {
+    self::compare_exercise("25_persistent_tables.hack");
   }
 }
