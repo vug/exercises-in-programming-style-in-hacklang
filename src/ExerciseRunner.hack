@@ -57,6 +57,9 @@ final class ExerciseRunner extends CLILib\CLIWithArguments {
       case "src/20_constructivist.hack":
         ex20\main($input);
         break;
+      case "src/21_tantrum.hack":
+        ex21\main($input);
+        break;
       default:
         \print_r("Exercise \"{$exercise}\" does not exist.\n");
     }
