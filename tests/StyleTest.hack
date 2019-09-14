@@ -90,4 +90,8 @@ final class StyleTest extends HackTest {
   public function testSmallInput22(): void {
     self::compare_exercise("22_passive_aggressive.hack");
   }
+
+  public function testSmallInput23(): void {
+    self::compare_exercise("23_declared_intentions.hack");
+  }
 }
