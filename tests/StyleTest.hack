@@ -86,4 +86,8 @@ final class StyleTest extends HackTest {
   public function testSmallInput21(): void {
     self::compare_exercise("21_tantrum.hack");
   }
+
+  public function testSmallInput22(): void {
+    self::compare_exercise("22_passive_aggressive.hack");
+  }
 }
