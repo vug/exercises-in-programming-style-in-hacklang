@@ -109,4 +109,8 @@ final class StyleTest extends HackTest {
   public function testSmallInput25(): void {
     self::compare_exercise("25_persistent_tables.hack");
   }
+
+  public function testSmallInput26(): void {
+    self::compare_exercise("26_spreadsheet.hack");
+  }
 }
