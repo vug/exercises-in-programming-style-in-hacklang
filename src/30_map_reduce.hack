@@ -23,7 +23,7 @@ function stream_partitions(
   \fclose($file);
 }
 
-function split_words(string $text): vec<(string, int)> {
+async function split_words(string $text): Awaitable<vec<(string, int)>> {
   $scan = (string $text): vec<string> ==> {
     $replaced = Regex\replace($text, re"/[\W_]+/", ' ');
     $lowered = Str\lowercase($replaced);
@@ -76,8 +76,9 @@ function sort(inout vec<(string, int)> $pairs): void {
   \usort(inout $pairs, ($p1, $p2) ==> $p2[1] - $p1[1]);
 }
 
-function main(string $filepath): void {
-  $pair_lists = Vec\map(
+async function main(string $filepath): Awaitable<void> {
+  // async is just for implying parallelism potential
+  $pair_lists = await Vec\map_async(
     stream_partitions($filepath, 200),
     $p ==> split_words($p),
   );
