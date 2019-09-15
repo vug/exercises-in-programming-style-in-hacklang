@@ -78,6 +78,9 @@ final class ExerciseRunner extends CLILib\CLIWithArguments {
       case "src/27_lazy_rivers.hack":
         ex27\main($input);
         break;
+      case "src/30_map_reduce.hack":
+        ex30\main($input);
+        break;
       default:
         \print_r("Exercise \"{$exercise}\" does not exist.\n");
     }
