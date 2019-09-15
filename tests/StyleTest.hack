@@ -113,4 +113,8 @@ final class StyleTest extends HackTest {
   public function testSmallInput26(): void {
     self::compare_exercise("26_spreadsheet.hack");
   }
+
+  public function testSmallInput27(): void {
+    self::compare_exercise("27_lazy_rivers.hack");
+  }
 }
