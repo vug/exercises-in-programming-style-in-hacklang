@@ -79,7 +79,10 @@ final class ExerciseRunner extends CLILib\CLIWithArguments {
         ex27\main($input);
         break;
       case "src/30_map_reduce.hack":
-        ex30\main($input);
+        await ex30\main($input);
+        break;
+      case "src/31_double_map_reduce.hack":
+        ex31\main($input);
         break;
       default:
         \print_r("Exercise \"{$exercise}\" does not exist.\n");

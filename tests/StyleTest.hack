@@ -121,4 +121,8 @@ final class StyleTest extends HackTest {
   public function testSmallInput30(): void {
     self::compare_exercise("30_map_reduce.hack");
   }
+
+  public function testSmallInput31(): void {
+    self::compare_exercise("31_double_map_reduce.hack");
+  }
 }
