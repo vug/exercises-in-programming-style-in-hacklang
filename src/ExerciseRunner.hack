@@ -84,6 +84,9 @@ final class ExerciseRunner extends CLILib\CLIWithArguments {
       case "src/31_double_map_reduce.hack":
         ex31\main($input);
         break;
+      case "src/32_trinity.hack":
+        await ex32\main($input, $this->getStdin());
+        break;
       default:
         \print_r("Exercise \"{$exercise}\" does not exist.\n");
     }
