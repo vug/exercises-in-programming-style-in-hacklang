@@ -26,6 +26,10 @@ final class StyleTest extends HackTest {
     }
   }
 
+  public function testSmallInput01(): void {
+    self::compare_exercise("01_good_old_times.hack");
+  }
+
   public function testSmallInput04(): void {
     self::compare_exercise("04_cookbook.hack");
   }
