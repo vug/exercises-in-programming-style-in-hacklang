@@ -150,15 +150,3 @@ function main(string $filepath): void {
     \print_r($ex->toString());
   }
 }
-
-function p(mixed ...$args): void {
-  foreach ($args as $arg) {
-    \print_r($arg);
-    \print_r(' ');
-  }
-}
-
-function pn(mixed ...$args): void {
-  p(...$args);
-  \print_r("\n");
-}
