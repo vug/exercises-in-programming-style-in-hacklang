@@ -12,6 +12,9 @@ final class ExerciseRunner extends CLILib\CLIWithArguments {
       case "src/01_good_old_times.hack":
         ex01\main($input);
         break;
+      case "src/02_go_forth.hack":
+        ex02\main($input);
+        break;
       case "src/04_cookbook.hack":
         ex04\main($input);
         break;

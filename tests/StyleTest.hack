@@ -1,4 +1,4 @@
-use namespace HH\Lib\{Str, Vec};
+use namespace HH\Lib\{Str, Vec, C};
 use function Facebook\FBExpect\expect;
 use type Facebook\HackTest\{DataProvider, HackTest};
 
@@ -16,7 +16,12 @@ final class StyleTest extends HackTest {
           |> Vec\filter($$, $line ==> !Str\contains($line, "ex18"))
           |> Str\join($$, "\n");
         // ex25 prints results in a different order
-      } else if ($source_file === "25_persistent_tables.hack") {
+      } else if (
+        C\contains(
+          vec["02_go_forth.hack", "25_persistent_tables.hack"],
+          $source_file,
+        )
+      ) {
         $actual = keyset(Str\split($actual, "\n"));
         $expected = keyset(Str\split($expected, "\n"));
       }
@@ -28,6 +33,10 @@ final class StyleTest extends HackTest {
 
   public function testSmallInput01(): void {
     self::compare_exercise("01_good_old_times.hack");
+  }
+
+  public function testSmallInput02(): void {
+    self::compare_exercise("02_go_forth.hack");
   }
 
   public function testSmallInput04(): void {
