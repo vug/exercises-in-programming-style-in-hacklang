@@ -15,10 +15,14 @@ final class StyleTest extends HackTest {
         $actual = Str\split($actual, "\n")
           |> Vec\filter($$, $line ==> !Str\contains($line, "ex18"))
           |> Str\join($$, "\n");
-        // ex25 prints results in a different order
+
       } else if (
-        C\contains(
-          vec["02_go_forth.hack", "25_persistent_tables.hack"],
+        C\contains( // these print results in a different order
+          vec[
+            "02_go_forth.hack",
+            "03_monolith.hack",
+            "25_persistent_tables.hack",
+          ],
           $source_file,
         )
       ) {
@@ -37,6 +41,10 @@ final class StyleTest extends HackTest {
 
   public function testSmallInput02(): void {
     self::compare_exercise("02_go_forth.hack");
+  }
+
+  public function testSmallInput03(): void {
+    self::compare_exercise("03_monolith.hack");
   }
 
   public function testSmallInput04(): void {
